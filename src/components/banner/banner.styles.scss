@@ -1,0 +1,24 @@
+.banner-container {
+    height: 175px;
+    padding: 25px;
+    background: #ea6137;
+    text-align: center;
+}
+
+.banner-text {
+    text-align: center;
+
+    h1 {
+        color: white;
+    }
+    span {
+        color: white;
+    }
+}
+
+.create-blog-button {
+    color: white;
+    background: #ea6137;
+    margin-top: 20px;
+    border:2px solid white;
+}
