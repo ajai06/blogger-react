@@ -3,11 +3,10 @@ import ArticleList from '../../components/articleList/articleList';
 
 import Banner from '../../components/banner/banner.component'
 
-function Homepage() {
-    console.log('xxxxx');
+function Homepage(props) {
     return (
         <div>
-            <Banner />
+            <Banner {...props}/>
             <ArticleList />
         </div>
     )

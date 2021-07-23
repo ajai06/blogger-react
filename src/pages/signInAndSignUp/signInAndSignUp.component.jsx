@@ -6,12 +6,13 @@ import SignUp from '../../components/signUp/signUp.component';
 
 import './signInAndSignUp.styles.scss';
 
-function SignInAndSignUp() {
+function SignInAndSignUp(props) {
 
     return (
+        
         <div className="sign-in-and-sign-up">
-            <SignIn />
-            <SignUp />
+            <SignIn {...props}/>
+            <SignUp {...props}/>
         </div>
     )
 }

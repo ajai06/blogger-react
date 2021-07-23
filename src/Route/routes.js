@@ -3,13 +3,10 @@ import React from "react";
 const Homepage = React.lazy(() => import('../pages/homepage/homepage.component'));
 const SignInAndSignUp = React.lazy(() => import('../pages/signInAndSignUp/signInAndSignUp.component'));
 const Article = React.lazy(() => import('../pages/article/article.component'));
-const PageNotFound = React.lazy(() => import('../pages/pageNotFound/pageNotFound.component'));
+const CreateArticle = React.lazy(()=> import("../pages/createArticle/createArticle.component"));
 
 const routes = [ 
-    {
-        path:"/",
-        component:Homepage
-    },
+    
     {
         path: "/signin",
         component: SignInAndSignUp
@@ -19,9 +16,17 @@ const routes = [
         component: Article
     },
     {
-        path:"*",
-        component: PageNotFound
+        path:"/home",
+        component:Homepage
     },
+    {
+        path:"/createArticle",
+        component: CreateArticle
+    },
+    {
+        path:"/editArticle/:id",
+        component: CreateArticle
+    }
 ]
 
 export default routes;

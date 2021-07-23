@@ -1,6 +1,9 @@
 import React from 'react';
 
 import { useForm } from "react-hook-form";
+// import { Loader } from 'rsuite';
+import Loader from "react-loader-spinner";
+
 
 import { useAuthDispatch } from '../../context/context';
 
@@ -9,8 +12,6 @@ import { userLogin } from '../../Services/apiServices';
 import './signIn.styles.scss';
 
 const SignIn = (props) => {
-
-    console.log(props);
 
     const dispatch = useAuthDispatch();
 
@@ -22,10 +23,12 @@ const SignIn = (props) => {
         .then(res=>{
             dispatch({type:"LOGIN", payload:res.data.user});
             localStorage.setItem("currentUser", JSON.stringify(res.data.user));
-            props.history.push('/');
+            props.history.push('/home');
         })
         .catch(err=>{
-            console.log(err)
+            console.log(err.response)
+            props.toast("danger", "Invalid", "Check your email or password")
+
         })
     }
 

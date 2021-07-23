@@ -8,7 +8,7 @@ import { useAuthDispatch, useAuthState } from '../../context/context';
 
 import './signUp.styles.scss';
 
-const SignUp = () => {
+const SignUp = (props) => {
 
     const { register, handleSubmit, watch, formState:{ errors }} = useForm();
 
@@ -20,13 +20,21 @@ const SignUp = () => {
 
         userRegister(data)
         .then(res=> {
-            console.log(res.data.user)
             localStorage.setItem('currentUser', JSON.stringify(res.data.user));
             dispatch({type: "REGISTER", payload: res.data.user})
-            history.push('/');
+            history.push('/home');
         })
         .catch(err => {
-            console.log(err)
+            console.log(err.response);
+            if(err.response.data.errors.email) {
+                props.toast("danger","Email exists", `Email has already been taken`)
+            }
+            if(err.response.data.errors.username) {
+                props.toast("danger","Username exists", `Username has already been taken`)
+            } else {
+                props.toast("warning","Error", `Something went wrong !`)
+
+            }
         })
     }
 
