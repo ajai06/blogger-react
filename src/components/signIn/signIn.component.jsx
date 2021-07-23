@@ -23,7 +23,7 @@ const SignIn = (props) => {
         .then(res=>{
             dispatch({type:"LOGIN", payload:res.data.user});
             localStorage.setItem("currentUser", JSON.stringify(res.data.user));
-            props.history.push('/home');
+            props.history.goBack();
         })
         .catch(err=>{
             console.log(err.response)

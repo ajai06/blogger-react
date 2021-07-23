@@ -4,20 +4,23 @@ const ROOT_API = 'https://conduit.productionready.io/api';
 
 const user = JSON.parse(localStorage.getItem("currentUser"));
 
-const headers = {
+let headers;
+if(user){
+    headers = {
 
-    headers: {
-        authorization: `Token ${user.token}`,
-        "Content-Type": "application/json",
-        },
+        headers: {
+            authorization: `Token ${user.token}`,
+            "Content-Type": "application/json",
+            },
+    }
 }
 
-console.log(user);
+
 
 //articles
 
-export const getAllArticles = () => {
-    return axios.get(`${ROOT_API}/articles`)
+export const getAllArticles = (page) => {
+    return axios.get(`${ROOT_API}/articles?limit=10&offset=${page}`)
 }
 
 export const getArticle = (slug) => {
@@ -32,8 +35,12 @@ export const updateArticle = (slug,article) => {
     return axios.put(`${ROOT_API}/articles/${slug}`, {article}, headers);
 }
 
-export const articlesByAuther = (author) => {
-    return axios.get(`${ROOT_API}/articles?author=${(author)}`, headers);
+export const articlesByAuther = (author,page) => {
+    return axios.get(`${ROOT_API}/articles?author=${(author)}&limit=10&offset=${page}`);
+}
+
+export const delArticle = (slug) => {
+    return axios.delete(`${ROOT_API}/articles/${slug}`, headers);
 }
 
 //user 

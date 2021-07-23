@@ -1,11 +1,13 @@
 import React from 'react';
 
-import './banner.styles.scss'
+
+import './banner.styles.scss';
 
 function Banner(props) {
 
+
     const toCreatePage = () => {
-        props.history.push('/createArticle');
+        props.history.push('/createArticle')
     }
 
     return (
