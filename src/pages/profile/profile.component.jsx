@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { useAuthState } from '../../context/context';
+// import { useAuthState } from '../../context/context';
 
 import './profile.styels.scss';
 

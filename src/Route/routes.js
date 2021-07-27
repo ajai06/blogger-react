@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React from "react";
 
 const Homepage = React.lazy(() => import('../pages/homepage/homepage.component'));
 const SignInAndSignUp = React.lazy(() => import('../pages/signInAndSignUp/signInAndSignUp.component'));
@@ -35,6 +35,10 @@ const routes = [
     },
     {
         path: '/myArticles',
+        component: MyArticles
+    },
+    {
+        path:'/authorArticles/:id',
         component: MyArticles
     }
 

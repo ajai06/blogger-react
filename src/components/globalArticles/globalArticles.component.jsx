@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import ReactPaginate from 'react-paginate';
 
@@ -7,24 +7,16 @@ import ListItem from '../listArticleItem/listItem.component';
 
 import './globalArticles.styles.scss';
 
-function GlobalArticles() {
+function GlobalArticles(props) {
 
     const [articles, setArticles] = useState([]);
     const [articleCount, setArticleCount] = useState('');
     const [loaded, setLoaded] = useState(false);
+    const listRef = useRef(null)
 
     useEffect(() => {
-
-        getAllArticles(0)
-            .then(res => {
-                setArticles(res.data.articles);
-                setArticleCount(res.data.articlesCount)
-                console.log(res.data);
-                setLoaded(true);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        
+        fetchArticles(0);
 
         return () => {
             setArticles([]);
@@ -32,24 +24,42 @@ function GlobalArticles() {
 
     }, []);
 
-    const setPage = ({ selected }) => {
-        console.log(selected);
-        // setLoaded(false);
-        getAllArticles(selected * 10)
+    const fetchArticles = (num) => {
+
+        getAllArticles(num * 10)
             .then(res => {
                 setArticles(res.data.articles);
-                // setLoaded(true);
+                setArticleCount(res.data.articlesCount)
+                setLoaded(true);
             })
             .catch(err => {
                 console.log(err);
             })
     }
 
+    const setPage = ({ selected }) => {
+        getAllArticles(selected * 10)
+            .then(res => {
+                setArticles(res.data.articles);
+                scrollToRef(listRef)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    const deleteBlog = ( ) => {
+        props.toast("success", "Success", "Deleted Successfully");
+        fetchArticles(0);
+    }
+
+    const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop)   
+
     return (
-        <>
+        <div ref={listRef} className="mt-4  w-75 m-auto">
             {
                 loaded && articles !== [] ? articles.map(article => (
-                    <ListItem key={article.slug} {...article} />
+                    <ListItem key={article.slug} article = {article} deleteBlog={()=>deleteBlog()}/>
                 ))
                     : <div className="text-center mt-5">Loading ...</div>
             }
@@ -75,7 +85,7 @@ function GlobalArticles() {
                     /> : ''
             }
 
-        </>
+        </div>
 
     )
 }

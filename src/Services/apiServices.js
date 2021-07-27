@@ -43,6 +43,16 @@ export const delArticle = (slug) => {
     return axios.delete(`${ROOT_API}/articles/${slug}`, headers);
 }
 
+// comments
+
+export const getComments = (slug) => {
+    return axios.get(`${ROOT_API}/articles/${slug}/comments`);
+}
+
+export const addAComment = (slug, comment) => {
+    return axios.post(`${ROOT_API}/articles/${slug}/comments`, { comment }, headers);
+}
+
 //user 
 
 export const userLogin = ({email, password}) => {

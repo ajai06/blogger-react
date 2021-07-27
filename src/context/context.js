@@ -31,8 +31,6 @@ export const useAuthDispatch = ( ) => {
 export const UserContextApi = ({children}) => {
     
     const [ user, dispatch ] = useReducer(reducer, initialState);
-
-    console.log(user);
     
     return (
         <UserStateContext.Provider value={user}>

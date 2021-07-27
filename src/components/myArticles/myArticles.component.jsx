@@ -8,17 +8,40 @@ import ListItem from '../listArticleItem/listItem.component';
 
 import { articlesByAuther } from '../../Services/apiServices';
 
-function MyArticles() {
+function MyArticles(props) {
 
     const state = useAuthState();
     const [myArticles, setMyArticles] = useState([]);
     const [articleCount, setArticleCount] = useState(null);
     const [loaded, setLoaded] = useState(false);
+    const [ author, setAuthor ] = useState(false);
+    const [authorName, setAuthorName] = useState('');
+    const [name, setName] = useState('');
 
     useEffect(() => {
-        articlesByAuther(state.user.username)
+
+        const id = props.match.params.id;
+
+        let name;
+        if(id) {
+            name = id;
+            setAuthor(true);
+            setAuthorName(name);
+            setName(name);
+        } else { 
+            name = state.user.username;
+            setAuthor(false);
+            setName(name);
+        }
+
+        fetchArticles(name);
+
+        
+    }, []);
+
+    const fetchArticles = (name) => {
+        articlesByAuther(name)
             .then(res => {
-                console.log(res.data)
                 setMyArticles(res.data.articles);
                 setArticleCount(res.data.articlesCount)
                 setLoaded(true)
@@ -26,32 +49,37 @@ function MyArticles() {
             .catch(err => {
                 console.log(err)
             })
-    }, []);
+    }
 
     const setPage = ({ selected }) => {
-        // setLoaded(false);
-        articlesByAuther(state.user.username, selected * 10)
+        articlesByAuther(name, selected * 10)
             .then(res => {
                 setMyArticles(res.data.articles);
-                // setLoaded(true);
             })
             .catch(err => {
                 console.log(err);
             })
     }
 
-    console.log(myArticles);
+    const deleteBlog = ( ) => {
+        fetchArticles(state.user.username);
+        props.toast("success", "Success", "Deleted Successfully")
+    }
 
     return (
         <>
             <div className="col-8 mx-auto">
-                <h2 className="mb-4">My Blogs</h2>
-
+                {
+                    author && state.user.username !== authorName
+                     ? <h2 className="mb-4">Articles by {authorName}</h2>   
+                     : <h2 className="mb-4">My Blogs</h2>
+                }
                 {
                     loaded 
                     ? myArticles.length === 0  ? <div className="mt-3">No blogs found...</div> 
                     : myArticles.map(article => (
-                        <ListItem key={article.slug} {...article} />
+                        <ListItem key={article.slug} article = {article} deleteBlog={()=>deleteBlog()}
+                                  loader={()=>setLoaded(!loaded)} />
                       ))
                     : <div className="text-center mt-5">Loading ...</div>
                 }

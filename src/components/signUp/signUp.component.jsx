@@ -1,10 +1,10 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { userRegister } from '../../Services/apiServices';
-import { useAuthDispatch, useAuthState } from '../../context/context';
+import { useAuthDispatch } from '../../context/context';
 
 import './signUp.styles.scss';
 

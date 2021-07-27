@@ -1,19 +1,20 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { confirmAlert } from 'react-confirm-alert'; // Import
+
 import { useAuthState } from '../../context/context';
 
 import { delArticle } from '../../Services/apiServices';
 
 import './listItem.styles.scss';
 
-function ListItem(article) {
+function ListItem(props) {
 
-    // console.log(article.author.username);
-
+    const  { article, deleteBlog, loader} = props
     const state = useAuthState();
-
     const history = useHistory();
+
     const route = (article) => {
         history.push(`/article/${article.slug}`)
     }
@@ -21,15 +22,34 @@ function ListItem(article) {
     const editArticle = () => {
         history.push(`/editArticle/${article.slug}`)
     }
+  
     const deleteArticle = () => {
-        console.log(article);
-        delArticle(article.slug)
-        .then(res=>{
-            console.log(res)
-        })
-        .catch(err=>{
-            console.log(err)
-        })
+        confirmAlert({
+            message: 'Are you sure to delete this blog?',
+            buttons: [
+              {
+                label: 'Yes',
+                onClick: () => {
+                    loader();
+                    delArticle(article.slug)
+                    .then(res=> {
+                        deleteBlog();
+                        loader();
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                }
+              },
+              {
+                label: 'No'
+              }
+            ]
+          });
+    }
+
+    const authorClick = () => {
+        history.push(`/authorArticles/${article.author.username}`)
     }
 
     return (
@@ -43,14 +63,14 @@ function ListItem(article) {
                     <hr />
                     <div>
                         <small className="d-flex justify-content-between flex-row">
-                            <span>
+                            <span onClick={authorClick} className="authorClick">
                                 Author : {article.author.username} | {new Date(article.createdAt).toDateString()}
                             </span>
                             {
                                 state.isLoggedIn && state.user.username === article.author.username
                                     ? <span>
-                                        <i onClick={editArticle} className="bi bi-pencil text-primary"></i>
-                                        <i onClick={deleteArticle} className="bi bi-trash mx-3 text-danger"></i>
+                                        <i onClick={editArticle} className="bi bi-pencil icons text-primary"></i>
+                                        <i onClick={deleteArticle} className="bi bi-trash icons mx-3 text-danger"></i>
                                     </span>
                                     : ''
                             }

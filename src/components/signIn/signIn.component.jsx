@@ -1,9 +1,6 @@
 import React from 'react';
 
 import { useForm } from "react-hook-form";
-// import { Loader } from 'rsuite';
-import Loader from "react-loader-spinner";
-
 
 import { useAuthDispatch } from '../../context/context';
 

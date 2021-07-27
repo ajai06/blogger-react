@@ -21,14 +21,12 @@ function CreateArticle(props) {
 
         if(!state.isLoggedIn) props.history.push('/signin') 
 
-        // !state.isLoggedIn ? p
         const id = props.match.params.id;
 
         if (id) {
             setEditMode(true)
             getArticle(id)
                 .then(res => {
-                    console.log(res);
                     patchValues(res.data.article);
                 })
                 .catch(err => {

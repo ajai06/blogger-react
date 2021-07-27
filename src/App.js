@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Router, Switch, Route, Redirect } from 'react-router-dom';
 
 import ReactNotification from 'react-notifications-component'
 import { store } from 'react-notifications-component';
@@ -8,6 +8,7 @@ import { store } from 'react-notifications-component';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-notifications-component/dist/theme.css';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 import routes from './Route/routes';
@@ -45,7 +46,7 @@ function App() {
 
     <UserContextApi>
 
-      <BrowserRouter history={history} >
+      <Router history={history} >
         <Suspense fallback={<div>Loading....</div>}>
           <ReactNotification />
           <Header />
@@ -64,7 +65,7 @@ function App() {
           </Switch>
         </Suspense>
 
-      </BrowserRouter>
+      </Router>
 
     </UserContextApi>
   );
