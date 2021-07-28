@@ -4,35 +4,38 @@ import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { userRegister } from '../../Services/apiServices';
+
 import { useAuthDispatch } from '../../context/context';
+import { useToastDispatch } from '../../context/toastContext';
 
 import './signUp.styles.scss';
 
-const SignUp = (props) => {
+const SignUp = () => {
 
     const { register, handleSubmit, watch, formState:{ errors }} = useForm();
 
     const history = useHistory();
 
-    const dispatch = useAuthDispatch();
+    const authDispatch = useAuthDispatch();
+    const toastDispatch = useToastDispatch();
 
     const submitForm = (data) => {
 
         userRegister(data)
         .then(res=> {
             localStorage.setItem('currentUser', JSON.stringify(res.data.user));
-            dispatch({type: "REGISTER", payload: res.data.user})
+            authDispatch({type: "REGISTER", payload: res.data.user})
             history.push('/home');
         })
         .catch(err => {
             console.log(err.response);
             if(err.response.data.errors.email) {
-                props.toast("danger","Email exists", `Email has already been taken`)
+                toastDispatch("danger","Email exists", `Email has already been taken`)
             }
             if(err.response.data.errors.username) {
-                props.toast("danger","Username exists", `Username has already been taken`)
+                toastDispatch("danger","Username exists", `Username has already been taken`)
             } else {
-                props.toast("warning","Error", `Something went wrong !`)
+                toastDispatch("warning","Error", `Something went wrong !`)
 
             }
         })

@@ -1,9 +1,9 @@
 import React from 'react';
 import {Route} from 'react-router-dom'
 
-const AppRoutes = ({ component:Component, path, ...toast}) => {
+const AppRoutes = ({ component:Component, path}) => {
     return (
-        <Route key={path} path={path} exact={true} render={props => <Component {...props } {...toast}/> } />
+        <Route key={path} path={path} exact={true} render={props => <Component {...props } /> } />
     )
 }
 

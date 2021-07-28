@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useAuthState } from '../../context/context';
+import { useToastDispatch } from '../../context/toastContext';
 
 import { createNewArticle, getArticle, updateArticle } from '../../Services/apiServices';
 
@@ -12,10 +13,11 @@ function CreateArticle(props) {
 
     const [editMode, setEditMode] = useState(false);
     const [loaded, setLoaded] = useState(false);
+
     const { handleSubmit, register, formState: { errors }, setValue } = useForm();
 
     const state = useAuthState();
-
+    const toastDispatch = useToastDispatch();
 
     useEffect(() => {
 
@@ -51,7 +53,7 @@ function CreateArticle(props) {
         createNewArticle(data)
             .then(res => {
                 setLoaded(true);
-                props.toast("success", "Success", "Article created successfully");
+                toastDispatch("success", "Success", "Article created successfully");
                 props.history.push(`/article/${res.data.article.slug}`)
             })
             .catch(err => {
@@ -63,7 +65,7 @@ function CreateArticle(props) {
         setLoaded(false)
         updateArticle(props.match.params.id, data)
             .then(res => {
-                props.toast("success", "Success", "Article updated successfully");
+                toastDispatch("success", "Success", "Article updated successfully");
                 props.history.push(`/article/${res.data.article.slug}`)
                 setLoaded(true);
             })

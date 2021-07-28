@@ -3,6 +3,7 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 
 import { useAuthDispatch } from '../../context/context';
+import { useToastDispatch } from '../../context/toastContext';
 
 import { userLogin } from '../../Services/apiServices';
 
@@ -10,7 +11,8 @@ import './signIn.styles.scss';
 
 const SignIn = (props) => {
 
-    const dispatch = useAuthDispatch();
+    const authDispatch = useAuthDispatch();
+    const toastDispatch = useToastDispatch();
 
     const { register, handleSubmit, formState: { errors }} = useForm();
 
@@ -18,13 +20,13 @@ const SignIn = (props) => {
 
         userLogin(data)
         .then(res=>{
-            dispatch({type:"LOGIN", payload:res.data.user});
+            authDispatch({type:"LOGIN", payload:res.data.user});
             localStorage.setItem("currentUser", JSON.stringify(res.data.user));
             props.history.goBack();
         })
         .catch(err=>{
             console.log(err.response)
-            props.toast("danger", "Invalid", "Check your email or password")
+            toastDispatch("danger", "Invalid", "Check your email or password")
 
         })
     }

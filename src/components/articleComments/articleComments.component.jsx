@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import { useAuthState } from '../../context/context';
+import { useToastDispatch } from '../../context/toastContext';
 
 import { getComments, addAComment } from '../../Services/apiServices';
 
@@ -10,8 +11,11 @@ import CommentList from '../commentList/commentList.component';
 function ArticleComments(props) {
 
     const state = useAuthState();
+    const toastDispatch = useToastDispatch();
+
     const [comments, setComments] = useState([]);
     const [loaded, setLoaded] = useState(false);
+
     const commentRef = useRef();
 
 
@@ -45,7 +49,7 @@ function ArticleComments(props) {
         setLoaded(false);
         addAComment(props.slug, { body: commentInput })
             .then(res => {
-                props.toast("success", "Success", "Comment added")
+                toastDispatch("success", "Success", "Comment added")
                 getAllComments();
                 commentRef.current.value = "";
                 setLoaded(true);

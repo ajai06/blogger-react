@@ -3,23 +3,25 @@ import { useParams } from "react-router-dom";
 
 import { confirmAlert } from 'react-confirm-alert'; // Import
 
-import { useAuthState } from '../../context/context'
+import { useAuthState } from '../../context/context';
+import { useToastDispatch } from '../../context/toastContext';
 
 import ArticleComments from '../../components/articleComments/articleComments.component';
 
 import { getArticle, delArticle} from '../../Services/apiServices';
 
-import './article.styles.scss'
+import './article.styles.scss';
 
 
 const Article = (props) => {
 
     const { id } = useParams();
+
     const [article, setArticle] = useState({});
     const [loaded, setLoaded] = useState(false);
 
     const state = useAuthState();
-    // console.log(state);
+    const toastDispatch = useToastDispatch()
 
     useEffect(() => {
 
@@ -53,7 +55,7 @@ const Article = (props) => {
                     .then(res=> {
                         console.log(res);
                         props.history.push('/myArticles');
-                        props.toast("success", "Success", "Deleted Successfully")
+                        toastDispatch("success", "Success", "Deleted Successfully")
                     })
                     .catch(err => {
                         console.log(err)

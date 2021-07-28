@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import { useAuthState } from '../../context/context';
+import { useToastDispatch } from '../../context/toastContext';
 
 import ListItem from '../listArticleItem/listItem.component';
 
@@ -11,6 +12,8 @@ import { articlesByAuther } from '../../Services/apiServices';
 function MyArticles(props) {
 
     const state = useAuthState();
+    const toastDispatch = useToastDispatch();
+
     const [myArticles, setMyArticles] = useState([]);
     const [articleCount, setArticleCount] = useState(null);
     const [loaded, setLoaded] = useState(false);
@@ -63,7 +66,7 @@ function MyArticles(props) {
 
     const deleteBlog = ( ) => {
         fetchArticles(state.user.username);
-        props.toast("success", "Success", "Deleted Successfully")
+        toastDispatch("success", "Success", "Deleted Successfully")
     }
 
     return (

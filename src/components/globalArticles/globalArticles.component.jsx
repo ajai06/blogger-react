@@ -2,16 +2,22 @@ import React, { useEffect, useState, useRef } from 'react';
 
 import ReactPaginate from 'react-paginate';
 
+import { useToastDispatch } from '../../context/toastContext';
+
 import { getAllArticles } from '../../Services/apiServices';
+
 import ListItem from '../listArticleItem/listItem.component';
 
 import './globalArticles.styles.scss';
 
-function GlobalArticles(props) {
+function GlobalArticles() {
+
+    const toastDispatch = useToastDispatch();
 
     const [articles, setArticles] = useState([]);
     const [articleCount, setArticleCount] = useState('');
     const [loaded, setLoaded] = useState(false);
+
     const listRef = useRef(null)
 
     useEffect(() => {
@@ -49,7 +55,7 @@ function GlobalArticles(props) {
     }
 
     const deleteBlog = ( ) => {
-        props.toast("success", "Success", "Deleted Successfully");
+        toastDispatch("success", "Success", "Deleted Successfully");
         fetchArticles(0);
     }
 
